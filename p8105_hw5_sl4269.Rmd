@@ -54,3 +54,26 @@ output
 iris_with_missing %>% map(rep_miss) %>% tibble
 ```
 
+#Problem 3
+
+```{r}
+
+simulation = function(n = 30, beta0 = 2, beta1 = 0, sig2 = 50) {
+  
+  sim_data = tibble(
+    x = rnorm(n, mean = 0, sd = 1),
+    y = beta0 + beta1*x + sig2/n
+  )
+  
+  ls_fit = lm(y ~ x, data = sim_data)
+  
+  tibble(
+    beta0_hat = coef(ls_fit)[1],
+    beta1_hat = coef(ls_fit)[2]
+  )
+}
+
+
+
+```
+
