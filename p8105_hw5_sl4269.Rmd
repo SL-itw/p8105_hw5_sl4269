@@ -67,15 +67,41 @@ list.files("./data/")
 
 ```{r}
 
-n = 30
-beta1 = 0
-beta0 = 2
-x = rnorm(0,1)
-e = rnorm(0, 50)
-y = beta0 + beta1*x + e
+sim_fun <- function(n = 30, beta1 , beta0 = 2, sig2 = 50){
 
+  sim_data <- tibble(
+                x = rnorm(n ,0,1),
+                e = rnorm(n, 0, sig2),
+                y = beta0 + beta1*x + e
+              )
+
+  linreg<-lm(y ~ x, data = sim_data)
 
   
+  
+  return(tibble(
+  b1h = linreg$coefficients[2],
+  pval= summary(linreg)$coefficients[8]
+  ))
+  
+}
+
+beta1_value_p <- data.frame()
+
+beta1_value_p <- rbind(sim_fun(beta1 = 0), beta1_value_p)
+
+beta1_value_p
+
+beta1_value_p <- rbind(sim_fun(beta1 = 0), beta1_value_p)
+
+beta1_value_p <- rbind(sim_fun(beta1 = 0), beta1_value_p)
+
+beta1_value_p <- rbind(sim_fun(beta1 = 0), beta1_value_p)
+
+beta1_value_p <- rbind(sim_fun(beta1 = 0), beta1_value_p)
+
+ 1:10 %>% map(sim_fun, beta1 = 0) %>% map_dfr(rbind) 
+
 ```
 
 
