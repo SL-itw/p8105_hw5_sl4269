@@ -24,11 +24,6 @@ iris_with_missing = iris %>%
 
 ```{r}
 
-df<-tibble(
-num_vec <- c(1,2,3,NA,5),
-cha_vec <- c("a","b",NA,"d","c"))
-
-
 rep_miss<- function(x){
   
   if(is.numeric(x)){
@@ -43,16 +38,11 @@ rep_miss<- function(x){
   x
   
 }
- map_dfr( df, rep_miss ) #%>% map_dfr(rbind)
-
-output
-
-
 
 
 ```
 
-```{r}
+```{r, message = FALSE}
 iris_with_missing %>% map_dfr(rep_miss)
 
 
@@ -64,7 +54,7 @@ iris_with_missing %>% map_dfr(rep_miss)
 
 In this plot we see the control of stay relatived the same over the 8 week study period while we see a change in the experimental arm over the samte time period. 
 
-```{r Spagetti plot}
+```{r file lists function, message = FALSE}
 
 files_names<- paste("./data/",list.files("./data/"),sep="")
 
@@ -86,6 +76,9 @@ files_data = tibble(names = files_names) %>%
     values_to = "observations"
   ) 
   
+```
+
+```{r, message=FALSE, warning=FALSE}
 files_data %>% ggplot(aes(x = week, y = observations, group = subject_id, col = subject_id))+geom_point() +
   facet_grid(~arm)+geom_line()
   
