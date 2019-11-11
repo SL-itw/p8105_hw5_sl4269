@@ -61,12 +61,16 @@ iris_with_missing %>% map_dfr(rep_miss)
 #Problem 2
 
 ```{r}
- 
-file_coerce <- function(x){
-  read_csv(x, col_names = c("subject Id", "control arm"))
-}
 
-map(list.files("./data/"), file_coerce)
+files_names<- paste("./data/",list.files("./data/"),sep="")
+
+files_names<-list.files("./data/")
+
+
+files_data = tibble(names = files_names) %>% 
+  mutate(contents = map(names, ~read_csv(file.path("data/", .)))) %>% 
+  unnest() %>% 
+  
 ```
 
 
