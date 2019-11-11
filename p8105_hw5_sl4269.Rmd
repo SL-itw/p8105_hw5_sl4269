@@ -60,7 +60,11 @@ iris_with_missing %>% map_dfr(rep_miss)
 
 #Problem 2
 
-```{r}
+##Ploting a spagetti plot of the data
+
+In this plot we see the control of stay relatived the same over the 8 week study period while we see a change in the experimental arm over the samte time period. 
+
+```{r Spagetti plot}
 
 files_names<- paste("./data/",list.files("./data/"),sep="")
 
@@ -70,6 +74,21 @@ files_names<-list.files("./data/")
 files_data = tibble(names = files_names) %>% 
   mutate(contents = map(names, ~read_csv(file.path("data/", .)))) %>% 
   unnest() %>% 
+  separate(names,into = c("arm","subject_id")) %>%
+  mutate(arm = recode(arm,
+        "con" ="control",
+        "exp" ="experiment"
+  )
+         ) %>% 
+  pivot_longer(
+    week_1:week_8,
+    names_to = "week",
+    values_to = "observations"
+  ) 
+  
+files_data %>% ggplot(aes(x = week, y = observations, group = subject_id, col = subject_id))+geom_point() +
+  facet_grid(~arm)+geom_line()
+  
   
 ```
 
